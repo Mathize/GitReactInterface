@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interface en React</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,900" rel="stylesheet">
+  </head>
+
+  <body>
+    <div id="app"></div>
+
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <script type="text/babel">
+      //Componente App (Class component)
+      class App extends React.Component {
+        constructor(){
+          super()
+          this.state = {
+            users: [],
+            userSelected: ""
+          }
+        }
+        render(){
+          return(
+            <div>
+                <HeaderComponent logo = "logo.png" title = "Interface en React"/>
+                <InputBarComponent type = "text" placeholder = "Usuario" titleButon = "Agregar"/>
+                <UserListComponent/>
+                <FooterComponent paragraph=" © 2019 Matias Somonte. Programacion Multimedial III - Universidad Maimónides"/>
+                  
+                
+            </div>
+               
+          )
+        }
+      }
+      //Componente Header (Functional Component)
+            const HeaderComponent = props => {
+            const {logo, title} = props
+            
+            return(
+                <div className="header">
+                    <img src={logo} alt=""/>
+                    <h1>{title}</h1> 
+                </div>
+            )
+        }
+        
+      //Componente InputBar (Functional Component)
+            const InputBarComponent = props => {
+            const {type, placeholder, titleButon} = props
+            
+            return(
+                <div className="formBar">
+                <form>
+                    <input type={type} placeholder={placeholder}/>
+                    <button>{titleButon}</button>
+                </form>
+                </div>
+            )
+        }
+      //Componente UsersList (Functional Component)
+             const UserListComponent = props => {
+                return(
+                <div>
+                   <UserComponent userImg = "fotoUser.jpg" name = "Mati" sector = "Accounting"/>
+                   <UserComponent userImg = "fotoUser.jpg" name = "Roberto" sector = "IT"/>
+                   <UserComponent userImg = "fotoUser.jpg" name = "Pepe" sector = "Marketing"/>
+                   <UserComponent userImg = "fotoUser.jpg" name = "Marta" sector = "Marketing"/>
+                   <UserComponent userImg = "fotoUser.jpg" name = "Leo" sector = "IT"/>
+                   <UserComponent userImg = "fotoUser.jpg" name = "Roberta" sector = "Accounting"/>
+                   <UserComponent userImg = "fotoUser.jpg" name = "Lea" sector = "Accounting"/>
+                   <UserComponent userImg = "fotoUser.jpg" name = "Vero" sector = "Marketing"/>
+                   <UserComponent userImg = "fotoUser.jpg" name = "Bera" sector = "IT"/>
+                   <UserComponent userImg = "fotoUser.jpg" name = "Kiko" sector = "Accounting"/>
+                </div>
+            )
+        }
+      //Componente User (Functional Component)
+            const UserComponent = props => {
+            const {userImg, name, sector} = props
+            
+            return(
+                <div className="user">
+                    <img src={userImg} alt=""/>
+                    <div className="userNombres">
+                    <h1>{name}</h1> 
+                    <h2>{sector}</h2>
+                    </div>
+                    <div className="userBotones">
+                    <button>Highlight</button>
+                    <button>Delete</button>
+                    </div>
+                </div>
+            )
+        }
+        
+      //Componente Footer (Functional Component)
+             //Componente User (Functional Component)
+            const FooterComponent = props => {
+            const {paragraph} = props
+            
+            return(
+                <div className="footer">
+                   <p>{paragraph}</p>
+                </div>
+            )
+        }
+      ReactDOM.render(<App />, document.querySelector('#app'))
+    </script>
+
+  </body>
+</html>
