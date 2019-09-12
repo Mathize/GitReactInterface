@@ -5,18 +5,23 @@
     font-family: "Roboto", sans-serif;
 }
 
+#app{
+    width: 80%;
+    margin: 0 auto;
+}
+
 .header{
 /*    box-shadow: 0px 3px 16px -8px rgba(163,163,163,0.85);*/
-    padding-left: 5em;
     overflow: hidden;
     line-height: 180px;
     height: 180px;
+    padding: 0em 1em 0em 1em;
 }
 
 .header img{
     width: 8em;
     float: left;
-    margin: 2em 2em 0em 3em;
+    margin: 2em 2em 0em 0em;
 }
 
 .header h1{
@@ -29,7 +34,7 @@
 }
 
 .formBar{
-    padding-left: 8em;
+    padding: 0em 1em 0em 1em;
     box-shadow: 0px 11px 20px -16px rgba(163,163,163,0.85);
     overflow: hidden;
     height: 80px;
@@ -37,7 +42,7 @@
 }
 
 .formBar form input{
-    width: 30%;
+    width: 80%;
     padding: 10px 20px;
     border-radius: 2em;
     border: 1.5px solid darkgrey;
@@ -59,7 +64,7 @@
     margin-left: 1em;
 }
 
-.user img{
+.userImage{
     width: 80px;
     border-radius: 10em;
 }
@@ -70,8 +75,8 @@
     align-items: center;
     padding-left: 8em;
     padding-bottom: 2em;
-    margin-top: 2em;
-    border-bottom: 1px solid darkgrey;
+    padding-top: 2em;
+    border-bottom: 1px solid #dedede;
 }
 
 .user:last-of-type{
@@ -94,12 +99,8 @@
     color: darkgrey;
 }
 
-.userBotones{
-    margin-left: 50%;
-    
-}
 
-.userBotones button:first-child{
+.userBotones button:last-child{
     background-color: white;
     border: 2px solid #33cc74;
     color: #33cc74;
@@ -111,7 +112,7 @@
     cursor: pointer;
 }
 
-.userBotones button:last-child{
+.userBotones button:first-child{
     background-color: white;
     border: none;
     color: #de4747;
@@ -134,5 +135,9 @@
     text-align: center;
 }
 
+
+.bg-yellow {
+        background-color: #fcfc79;
+      }
 
 
