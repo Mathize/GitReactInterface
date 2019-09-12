@@ -8,6 +8,7 @@
     <title>Interface en React</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,900" rel="stylesheet">
+   
   </head>
 
   <body>
@@ -16,26 +17,84 @@
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
 
     <script type="text/babel">
       //Componente App (Class component)
       class App extends React.Component {
         constructor(){
           super()
-          this.state = {
-            users: [],
-            userSelected: ""
+            
+           const employees = Array.from({ length: 30 }, () => ({
+            name: faker.name.findName(),
+            sector: faker.name.jobArea(),
+            avatar: faker.image.avatar(),
+            id: faker.random.uuid(),
+          }))
+           
+          const sectors = employees.map(({ sector }) => sector)
+          const sectorsUnrepeated = new Set(sectors)
+          const sectorsArray = [...sectorsUnrepeated]
+          
+          this.state = { //el state nos permite almacenar datos dentro de nuestro componente
+            list: employees,
+            employeeName: '',
+            idMonthEmployee: '',
           }
         }
-        render(){
-          return(
-            <div>
-                <HeaderComponent logo = "logo.png" title = "Interface en React"/>
-                <InputBarComponent type = "text" placeholder = "Usuario" titleButon = "Agregar"/>
-                <UserListComponent/>
-                <FooterComponent paragraph=" © 2019 Matias Somonte. Programacion Multimedial III - Universidad Maimónides"/>
+          
+          //FUNCIONES ----------------------------
+            handleMonthEmployee = id =>{
+              console.log(id)
+              this.setState({
+                  idMonthEmployee: id 
                   
-                
+              })
+          }
+          
+            handleInputChange = event => {
+              const {value} = event.target
+              this.setState({
+                  employeeName: value
+              })
+                console.log(this.state.employeeName)
+          }
+            
+            handleFormSubmit = event => {
+              event.preventDefault()
+              const {list, employeeName } = this.state
+              const newEmployee = {
+                name: employeeName,
+                sector: faker.name.jobArea(),
+                avatar: faker.image.avatar(),
+                id: faker.random.uuid(),
+              }
+              const newList = [newEmployee, ...list]
+              this.setState({
+                  list:newList,
+                  employeeName:''
+          })
+        }
+            
+        render(){
+          return(              
+               <div>
+              <HeaderComponent logo = "logo.png" title="Interface en React"/>
+              <div className='container'>
+                <InputBarComponent
+                    placeholder = "Nombre del Empleado" 
+                    titleButon = "Agregar"
+                    employeeName = {this.state.employeeName}
+                    onInputChange = {this.handleInputChange}
+                    onFormSubmit = {this.handleFormSubmit}
+                    />
+                <UserListComponent 
+                list={this.state.list} 
+                onSetMonthEmployee = {this.handleMonthEmployee}
+                idMonthEmployee = {this.state.idMonthEmployee}
+                    /> 
+                  <FooterComponent paragraph=" © 2019 Matias Somonte. Programacion Multimedial III - Universidad Maimónides"/>
+              </div>
             </div>
                
           )
@@ -55,52 +114,66 @@
         
       //Componente InputBar (Functional Component)
             const InputBarComponent = props => {
-            const {type, placeholder, titleButon} = props
+            const {placeholder, titleButon, employeeName, onInputChange, onFormSubmit} = props
             
             return(
                 <div className="formBar">
-                <form>
-                    <input type={type} placeholder={placeholder}/>
-                    <button>{titleButon}</button>
+               
+                <form onSubmit = {onFormSubmit}>
+                <input 
+                    placeholder={placeholder}
+                    value = {employeeName} 
+                    onChange = {onInputChange}
+                />
+                <button type='submit'>{titleButon}</button>
                 </form>
                 </div>
             )
         }
       //Componente UsersList (Functional Component)
              const UserListComponent = props => {
+                 const {list,idMonthEmployee, onSetMonthEmployee} = props
                 return(
                 <div>
-                   <UserComponent userImg = "fotoUser.jpg" name = "Mati" sector = "Accounting"/>
-                   <UserComponent userImg = "fotoUser.jpg" name = "Roberto" sector = "IT"/>
-                   <UserComponent userImg = "fotoUser.jpg" name = "Pepe" sector = "Marketing"/>
-                   <UserComponent userImg = "fotoUser.jpg" name = "Marta" sector = "Marketing"/>
-                   <UserComponent userImg = "fotoUser.jpg" name = "Leo" sector = "IT"/>
-                   <UserComponent userImg = "fotoUser.jpg" name = "Roberta" sector = "Accounting"/>
-                   <UserComponent userImg = "fotoUser.jpg" name = "Lea" sector = "Accounting"/>
-                   <UserComponent userImg = "fotoUser.jpg" name = "Vero" sector = "Marketing"/>
-                   <UserComponent userImg = "fotoUser.jpg" name = "Bera" sector = "IT"/>
-                   <UserComponent userImg = "fotoUser.jpg" name = "Kiko" sector = "Accounting"/>
+                   {
+               list.map(employee =>  
+                    <UserComponent 
+                    key= {employee.id} 
+                    employee = {employee}
+                    onSetMonthEmployee = {onSetMonthEmployee}
+                   idMonthEmployee ={idMonthEmployee}
+                    />)     
+            }
                 </div>
             )
         }
       //Componente User (Functional Component)
             const UserComponent = props => {
-            const {userImg, name, sector} = props
+            const {employee, idMonthEmployee, onSetMonthEmployee} = props
+            const {name, avatar, sector, id} = employee
+            const isMonthEmployee = idMonthEmployee === id
             
-            return(
-                <div className="user">
-                    <img src={userImg} alt=""/>
-                    <div className="userNombres">
-                    <h1>{name}</h1> 
-                    <h2>{sector}</h2>
-                    </div>
-                    <div className="userBotones">
-                    <button>Highlight</button>
-                    <button>Delete</button>
-                    </div>
+            
+        return(
+          <div className= {`user ${isMonthEmployee ? 'bg-yellow': ''}`} >
+            <figure>
+              <img className='userImage' src={avatar} />
+            </figure>
+            <div className="userNombres">
+              <h1>{name}</h1>
+              <h2>{sector}</h2>
+            </div>
+            <div className="userBotones">
+                <button>Eliminar</button>
+                {!isMonthEmployee &&(
+            <button onClick={()=> onSetMonthEmployee(id)}> Highlight </button>
+                )}
+                
+                
                 </div>
-            )
-        }
+          </div>
+        )
+      }
         
       //Componente Footer (Functional Component)
              //Componente User (Functional Component)
